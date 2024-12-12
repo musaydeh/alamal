@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_smartr_alamal_sale_enhancements_stock_move_line_detailed_operation_form" model="ir.ui.view">
+        <field name="name">view.smartr.alamal.sale.enhancements.stock.move.line.detailed.operation.form</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_stock_move_line_detailed_operation_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='lot_id']" position="attributes">
+                <attribute name="readonly">id</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--        ply_rating action-->
+        <record id="tire_ply_rating_action" model="ir.actions.act_window">
+            <field name="name">Tire PLY Rating</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">tire.ply.rating</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create A New Tire PLY Rating
+                </p>
+            </field>
+        </record>
+
+        <!--        speed_index action-->
+        <record id="action_tire_speed_index" model="ir.actions.act_window">
+            <field name="name">Speed Index</field>
+            <field name="res_model">tire.speed.index</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create A New Tire Speed Index
+                </p>
+            </field>
+        </record>
+
+        <!--        load_index action-->
+        <record id="tire_load_index_action" model="ir.actions.act_window">
+            <field name="name">Tire Load Index</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">tire.load.index</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create A New Tire Load Index
+                </p>
+            </field>
+        </record>
+
+        <!--        rim_diameter action-->
+        <record id="tire_rim_diameter_action" model="ir.actions.act_window">
+            <field name="name">Tire Rim Diameter</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">tire.rim.diameter</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create A New Tire Rim Diameter
+                </p>
+            </field>
+        </record>
+
+        <!--        aspect_ratio action-->
+        <record id="tire_aspect_ratio_action" model="ir.actions.act_window">
+            <field name="name">Tire Aspect Ratio</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">tire.aspect.ratio</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create A New Aspect Ratio
+                </p>
+            </field>
+        </record>
+
+        <!--        tire_width action-->
+        <record id="tire_width_action" model="ir.actions.act_window">
+            <field name="name">Tire width</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">tire.width</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create A New Width
+                </p>
+            </field>
+        </record>
+        <!--        tire pattern action-->
+        <record id="tire_pattern_action" model="ir.actions.act_window">
+            <field name="name">Tire pattern</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">tire.pattern</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create A New pattern
+                </p>
+            </field>
+        </record>
+        <!--        tire brand action-->
+        <record id="tire_brand_action" model="ir.actions.act_window">
+            <field name="name">Tire Brand</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">tire.brand</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create A New Brand
+                </p>
+            </field>
+        </record>
+        <record id="tire_brand_tree_view" model="ir.ui.view">
+            <field name="name">Tire Brand</field>
+            <field name="model">tire.brand</field>
+            <field name="arch" type="xml">
+                <list string="">
+                    <field name="name"/>
+                    <field name="patterns" widget="many2many_tags"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- main menu -->
+        <menuitem id="menu_warehouse_tires_conf" name="Tires Conf" parent="stock.menu_stock_config_settings"
+                  groups="alamal_tires.manage_tires_conf_group" sequence="20"/>
+        <!-- Brands menu -->
+        <menuitem
+                id="menu_tires_brands"
+                action="tire_brand_action"
+                name="Brands" parent="menu_warehouse_tires_conf" sequence="5"
+                groups="alamal_tires.manage_tires_conf_group"/>
+        <!-- Patterns menu -->
+        <menuitem
+                id="menu_tires_patterns"
+                action="tire_pattern_action"
+                name="Patterns" parent="menu_warehouse_tires_conf" sequence="5"
+                groups="alamal_tires.manage_tires_conf_group"/>
+
+        <!--        ply_rating menu-->
+        <menuitem
+                id="menu_tire_ply_rating"
+                action="tire_ply_rating_action"
+                name="Ply Rating" parent="menu_warehouse_tires_conf" sequence="5"
+                groups="alamal_tires.manage_tires_conf_group"/>
+
+        <!--        ply_rating menu-->
+        <menuitem
+                id="menu_tire_speed_index"
+                action="action_tire_speed_index"
+                name="Speed Index" parent="menu_warehouse_tires_conf" sequence="5"
+                groups="alamal_tires.manage_tires_conf_group"/>
+
+        <!--        load_index menu-->
+        <menuitem
+                id="menu_tires_load_index"
+                action="tire_load_index_action"
+                name="Load Index" parent="menu_warehouse_tires_conf" sequence="5"
+                groups="alamal_tires.manage_tires_conf_group"/>
+
+        <!--        rim_diameter menu-->
+        <menuitem
+                id="menu_tires_rim_diameter"
+                action="tire_rim_diameter_action"
+                name="RIM Diameter" parent="menu_warehouse_tires_conf" sequence="5"
+                groups="alamal_tires.manage_tires_conf_group"/>
+
+        <!--        aspect_ratio menu-->
+        <menuitem
+                id="menu_tires_aspect_ratio"
+                action="tire_aspect_ratio_action"
+                name="Aspect Ratio" parent="menu_warehouse_tires_conf" sequence="5"
+                groups="alamal_tires.manage_tires_conf_group"/>
+
+        <!--        tire_width menu-->
+        <menuitem
+                id="menu_tire_width"
+                action="tire_width_action"
+                name="Tire Width" parent="menu_warehouse_tires_conf" sequence="5"
+                groups="alamal_tires.manage_tires_conf_group"/>
+
+    </data>
+</odoo>

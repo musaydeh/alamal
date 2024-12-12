@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="purchase_requisition_view_form_inherit" model="ir.ui.view">
+            <field name="name">purchase.requisition.form.inherit</field>
+            <field name="model">purchase.requisition</field>
+            <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='vendor_id']" position="after">
+                    <field name="type_ids" widget="many2many_tags"
+                           readonly="state in ['confirmed', 'done'] and requisition_type == 'blanket_order'"
+                           required="requisition_type == 'blanket_order'"/>
+                </xpath>
+
+                <xpath expr="//page/field[@name='line_ids']/list/field[@name='product_id']" position="after">
+                    <field name="product_tracking" column_invisible="1"/>
+                    <field name="lot_id" context="{'default_product_id': product_id}"
+                           domain="[('product_id','=',product_id),('source_id','in',parent.type_ids)]"
+                           groups="stock.group_production_lot"
+                           required="product_tracking not in ('none', False)"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="inherit_sale_order_form_adding_require_approval" model="ir.ui.view">
+            <field name="name">inherit.sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='client_order_ref']" position="after">
+                    <field name="notes"/>
+                </xpath>
+                <xpath expr="//field[@name='fiscal_position_id']" position="after">
+                    <field name="is_export" invisible="1"/>
+                </xpath>
+                <xpath expr="//notebook/page[@name='order_lines']/field/list/field[@name='discount']"
+                       position="after">
+                    <field name="require_approval" groups="sales_team.group_sale_manager" optional="hide" readonly="1"/>
+                </xpath>
+                <xpath expr="//notebook/page[@name='order_lines']/field/list/field[@name='discount']"
+                       position="before">
+                    <field name="no_containers"/>
+                    <field name="container_id" column_invisible="not parent.is_export"/>
+                </xpath>
+                <xpath expr="//button[@name='action_view_delivery']" position="after">
+
+                    <button type="object"
+                            name="action_view_procurement_group_button"
+                            class="oe_stat_button"
+                            icon="fa-dropbox"
+                            invisible="state in ['draft','cancel']" groups="stock.group_stock_manager">
+                        <span>Procurement Group</span>
+                    </button>
+
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

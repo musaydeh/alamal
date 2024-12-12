@@ -1,0 +1,29 @@
+<odoo>
+    <record id="view_smartr_alamal_sale_enhancements_product_pricelist_item_form" model="ir.ui.view">
+        <field name="name">view.smartr.alamal.sale.enhancements.product.pricelist.item.form</field>
+        <field name="model">product.pricelist.item</field>
+        <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="lot_id"
+                       options="{'no_create':1}"
+                       invisible="display_applied_on != '1_product'"
+                       placeholder="All Lots / Serial Numbers"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_smartr_alamal_sale_enhancements_product_pricelist_item_from_product_tree" model="ir.ui.view">
+        <field name="name">view.smartr.alamal.sale.enhancements.product.pricelist.item.from.product.tree</field>
+        <field name="model">product.pricelist.item</field>
+        <field name="inherit_id" ref="product.product_pricelist_item_tree_view_from_product"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_tmpl_id']" position="after">
+                <field name="lot_id"
+                       options="{'no_create':1}"
+                       column_invisible="context.get('active_model') == 'product.category'"
+                       placeholder="All Lots / Serial Numbers"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

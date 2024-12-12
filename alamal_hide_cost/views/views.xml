@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Hide Valuation In Stock Transfare   -->
+        <record model="ir.ui.view" id="override_transfare_valuation_button">
+            <field name="name">Hide Valuation Button</field>
+            <field name="model">stock.picking</field>
+            <field name="mode">primary</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_view_stock_valuation_layers']" position="attributes">
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

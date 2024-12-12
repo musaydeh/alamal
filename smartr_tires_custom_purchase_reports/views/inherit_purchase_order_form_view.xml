@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="purchase_order_view_form_inherit" model="ir.ui.view">
+            <field name="name">purchase.order.form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page/field[@name='order_line']/list/field[@name='product_qty']" position="after">
+                    <button type="object" name="action_product_locations_report" title="Location Report"
+                            icon="fa-map-marker" invisible="product_type != 'product' or not id"/>
+                </xpath>
+
+                <xpath expr="//field[@name='fiscal_position_id']" position="after">
+                    <field name="journal_id" options="{'no_create': True}" groups="base.group_no_one"
+                           readonly="invoice_status == 'invoiced' or state == 'done'" required="1"/>
+                </xpath>
+                <xpath expr="//page/field[@name='order_line']/list/field[@name='name']" position="after">
+                    <field name="product_tracking" column_invisible="1"/>
+                    <field name="lot_id" context="{'default_product_id': product_id}"
+                           domain="[('source_id','in',parent.type_ids)]"
+                           groups="stock.group_production_lot"
+                           readonly="product_tracking == 'none' or state in ('purchase', 'to approve', 'done', 'cancel') or is_downpayment"
+                           required="product_tracking not in ('none', False)"/>
+                </xpath>
+
+                <xpath expr="//field[@name='picking_type_id']" position="after">
+                    <field name="mrp_tag_ids" widget="many2many_tags"
+                           readonly="state in ['purchase', 'done', 'cancel']"/>
+                    <field name="total_qty"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

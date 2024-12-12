@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-inherit="stock.Forecasted" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('o_search_options')]" position="inside">
+           <ForecastedLotFilter action="props.action" lots="lots" setLotInContext.bind="updateLot"/>
+        </xpath>
+    </t>
+</templates>

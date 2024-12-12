@@ -1,0 +1,17 @@
+<odoo>
+    <record id="view_alamal_tires_stock_move_line_tree" model="ir.ui.view">
+        <field name="name">view.alamal.tires.stock.move.line.tree</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_move_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='quantity']" position="after">
+                <field name="overall_moving_balance" optional="hide"/>
+            </xpath>
+
+            <xpath expr="//field[@name='quantity']" position="before">
+                <field name="picking_partner_id" optional="show"/>
+                <field name="order_responsible_id" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_alamal_tires_ir_actions_report_form" model="ir.ui.view">
+        <field name="name">view.alamal.tires.ir.actions.report.form</field>
+        <field name="model">ir.actions.report</field>
+        <field name="inherit_id" ref="base.act_report_xml_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='attachment']" position="after">
+                <field name="print_from_procurement_group" invisible="model not in ['sale.order','stock.picking']"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

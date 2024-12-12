@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="inherit_view_order_form_inherit_sale_stock" model="ir.ui.view">
+            <field name="name">inherit.sale.order.form.sale.stock</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/list/field[@name='route_id']" position="attributes">
+                    <attribute name="readonly">product_uom_qty == qty_delivered</attribute>
+                    <attribute name="required">parent.state == 'sale' and not display_type</attribute>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,28 @@
+<odoo>
+    <record id="view_print_reports_from_procurement_group_form" model="ir.ui.view">
+        <field name="name">view.print.reports.from.procurement.group.form</field>
+        <field name="model">print.reports.from.procurement.group</field>
+        <field name="arch" type="xml">
+            <form string="Print Reports from Procurement Group">
+                <sheet>
+                    <group>
+                        <field name="report_id" options="{'no_open': True, 'no_create': True}"/>
+                    </group>
+                </sheet>
+
+                <footer>
+                    <button name="print_report" type="object" class="btn-primary" string="Print"/>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_print_reports_from_procurement_group_wizard" model="ir.actions.act_window">
+        <field name="name">Print Reports</field>
+        <field name="res_model">print.reports.from.procurement.group</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="alamal_tires.view_print_reports_from_procurement_group_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

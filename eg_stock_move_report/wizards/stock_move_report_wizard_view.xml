@@ -1,0 +1,45 @@
+<odoo>
+    <record model="ir.ui.view" id="stock_move_report_wizard_form_view">
+        <field name="name">stock.move.report.wizard.form.view</field>
+        <field name="model">stock.move.report.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                    <group>
+                        <field name="selection" widget="radio"/>
+                        </group>
+                        <group>
+                            <field name="from_date"/>
+                             <field name="to_date"/>
+                        </group>
+                        <group>
+                        </group>
+                        <group>
+                            <field name="all_locations"  /><!--widget="many2many_tags"-->
+                            <field name="location_id" invisible="all_locations != False" />
+                        </group>
+                    <group>
+
+                            <field name="product_id" invisible="selection != 'product'" />
+                           <field name="category_id"  invisible="selection != 'category'"  />
+                    </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_generate_report" type="object" string="Generate" class="oe_highlight"/>
+                    <button string="Cancel" class="btn-default oe_highlight" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="stock_move_report_wizard_action" model="ir.actions.act_window">
+        <field name="name">Stock Move Report</field>
+        <field name="res_model">stock.move.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem parent="stock.menu_warehouse_report" id="menu_stock_move_report_wizard" action="stock_move_report_wizard_action"/>
+</odoo>

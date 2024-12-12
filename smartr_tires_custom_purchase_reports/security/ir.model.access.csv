@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mrp_tag_group_purchase_user,mrp.tag.group.purchase.user,model_mrp_tag,purchase.group_purchase_user,1,0,0,0
+access_mrp_tag_group_sale_salesman,mrp.tag.group.sale.salesman,model_mrp_tag,sales_team.group_sale_salesman,1,0,0,0
+
+access_mrp_tag_group_purchase_manager,mrp.tag.group.purchase.manager,model_mrp_tag,purchase.group_purchase_manager,1,1,1,1
+access_mrp_tag_group_sale_manager,mrp.tag.group.sale.manager,model_mrp_tag,sales_team.group_sale_manager,1,1,1,1

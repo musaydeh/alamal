@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_smartr_tires_custom_purchase_reports_product_category_form" model="ir.ui.view">
+        <field name="name">view.smartr.tires.custom.purchase.reports.product.category.form</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="is_tire" class="oe_inline"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

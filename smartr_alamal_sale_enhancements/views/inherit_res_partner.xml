@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_smartr_alamal_sale_enhancements_res_partner_filter" model="ir.ui.view">
+            <field name="name">view.smartr.alamal.sale.enhancements.res.partner.filter</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='inactive']" position="before">
+                    <filter name="over_credit_limit" string="Over Credit Limit"
+                            domain="[('over_credit_limit', '=', True)]"
+                            groups="account.group_account_invoice,account.group_account_readonly"/>
+                    <separator/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="allowed_products_view_partner_form" model="ir.ui.view">
+            <field name="name">res.partner</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='open_partner_ledger']" position="after">
+                    <div name="button_box" position="inside">
+                        <button type="object" groups="account.group_account_invoice" class="oe_stat_button"
+                                id="dynamic_partner_ledger_button" icon="fa-pencil-square-o"
+                                name="action_dynamic_partner_ledger"
+                                title="Dynamic Partner Ledger" context="{'default_partner_id': id}">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Dynamic Partner Ledger</span>
+                            </div>
+                        </button>
+                    </div>
+                </xpath>
+                <xpath expr="//group[@name='sale']" position="inside">
+                    <field name="customer_target"/>
+                </xpath>
+                <xpath expr="//page[@name='contact_addresses']" position="after">
+                    <!-- Add your fields or attributes here -->
+                    <!--                    <page string="Allowed Products">-->
+
+                    <!--                        <field name="allowed_products">-->
+                    <!--                            <list create="0">-->
+                    <!--                                <control>-->
+                    <!--                                    <create name="add_product_control" string="Add a product"/>-->
+                    <!--&lt;!&ndash;                                    <create name="add_section_control" string="Add a section"&ndash;&gt;-->
+                    <!--&lt;!&ndash;                                            context="{'default_display_type': 'line_section'}"/>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                                    <create name="add_note_control" string="Add a note"&ndash;&gt;-->
+                    <!--&lt;!&ndash;                                            context="{'default_display_type': 'line_note'}"/>&ndash;&gt;-->
+                    <!--                                </control>-->
+                    <!--                                <field name="name"/>-->
+                    <!--                                <field name="default_code"/>-->
+                    <!--                            </list>-->
+                    <!--                        </field>-->
+                    <!--                    </page>-->
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

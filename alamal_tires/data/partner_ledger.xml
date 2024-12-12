@@ -1,0 +1,8 @@
+<odoo>
+    <record id="partner_ledger_report_source_document" model="account.report.column">
+        <field name="name">Source Document</field>
+        <field name="expression_label">invoice_origin</field>
+        <field name="figure_type">string</field>
+        <field name="report_id" ref="account_reports.partner_ledger_report"/>
+    </record>
+</odoo>

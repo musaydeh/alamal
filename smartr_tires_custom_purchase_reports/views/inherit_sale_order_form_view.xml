@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="sale_history_tree" model="ir.ui.view">
+            <field name="name">sale.history.tree</field>
+            <field name="model">sale.order.line</field>
+            <field name="arch" type="xml">
+                <list create="false" default_order="order_id asc">
+                    <field name="order_id" widget="many2one"/>
+                    <field name="create_date" widget="date"/>
+                    <field name="state"/>
+                    <field name="salesman_id" widget="many2one"/>
+                    <field name="order_partner_id"/>
+                    <field name="product_uom_qty"/>
+                    <field name="price_unit"/>
+                </list>
+            </field>
+        </record>
+        <record id="action_sale_history" model="ir.actions.act_window">
+            <field name="res_model">sale.order.line</field>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="sale_history_tree"/>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No sale order were made for this product yet!
+                </p>
+            </field>
+        </record>
+
+        <record id="sale_order_view_form_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='order_lines']/field[@name='order_line']/list/field[@name='product_uom_qty']"
+                       position="after">
+                    <button type="object" name="action_product_locations_report" title="Location Report"
+                            icon="fa-map-marker" invisible="not product_id"/>
+                </xpath>
+                <xpath expr="//page[@name='order_lines']/field[@name='order_line']/list/field[@name='price_unit']"
+                       position="after">
+                    <button name="action_sale_history" type="object" icon="fa-history" title="Sale History"
+                            invisible="not product_id"/>
+                </xpath>
+                <xpath expr="//page[@name='other_information']/group/group[@name='sales_person']/field[@name='tag_ids']"
+                       position="after">
+                    <field name="hide_from_sale_history" groups="sales_team.group_sale_manager"/>
+                </xpath>
+
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="mrp_tag_ids" widget="many2many_tags" readonly="state in ['sale', 'cancel']"/>
+                    <field name="total_qty"/>
+                </xpath>
+
+                <xpath expr="//field[@name='journal_id']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

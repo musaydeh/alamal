@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_alamal_tires_only_product_template_form" model="ir.ui.view">
+            <field name="name">view.alamal.tires.only.product.template.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='default_code']" position="after">
+                    <field name="factory_code"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="alamal_tires_product_data" model="ir.ui.view">
+            <field name="name">Tires Data Form View</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <field name="type" position="after">
+                    <field name="product_kind"/>
+                </field>
+
+                <group name="group_lots_and_weight" position="inside">
+                    <field name="hc_capacity_40"/>
+                </group>
+
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="readonly">product_kind == 'tire'</attribute>
+                    <attribute name="force_save">1</attribute>
+                </xpath>
+
+                <xpath expr="//page[@name='general_information']" position="after">
+                    <page name="tire_data" string="Tire Data" invisible="product_kind != 'tire'">
+                        <group>
+                            <group>
+                                <field name="r_zr"/>
+                                <field name="tire_width"/>
+                                <field name="aspect_ratio"/>
+                                <field name="rim_diameter"/>
+                                <field name="tire_brand"/>
+                                <field name="allowed_patterns_ids" invisible="1"/>
+                                <field name="tire_pattern" domain="[('id', 'in', allowed_patterns_ids)]"/>
+                            </group>
+                            <group>
+                                <field name="load_index"/>
+                                <field name="speed_index_id"/>
+                                <field name="ply_rating"/>
+                                <field name="origin"/>
+                            </group>
+                        </group>
+                    </page>
+                    <page string="OE Specifications" invisible="product_kind != 'tire'">
+                        <group>
+                            <field name="product_oe_specification_ids" widget="many2many_tags"/>
+                        </group>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="inherit_product_template_tree_view" model="ir.ui.view">
+            <field name="name">product.template.product.tree</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='virtual_available']" position="after">
+                    <!-- Add new fields here -->
+                    <field name="free_qty"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

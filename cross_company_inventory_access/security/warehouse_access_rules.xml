@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Record rule for warehouse access -->
+        <record id="warehouse_access_rule" model="ir.rule">
+            <field name="name">Cross Company Warehouse Access</field>
+            <field name="model_id" ref="stock.model_stock_quant"/>
+            <field name="domain_force">[
+                '|',
+                    ('company_id', '=', user.company_id.id),
+                    '&amp;',
+                        ('location_id.warehouse_id', 'in', 
+                            user.env['warehouse.access'].search([
+                                ('user_id', '=', user.id),
+                                ('active', '=', True)
+                            ]).mapped('warehouse_id').ids),
+                        ('company_id', 'in', 
+                            user.env['warehouse.access'].search([
+                                ('user_id', '=', user.id),
+                                ('active', '=', True)
+                            ]).mapped('target_company_id').ids)
+            ]</field>
+            <field name="groups" eval="[(4, ref('group_cross_company_inventory'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+    </data>
+</odoo>

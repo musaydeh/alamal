@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="fast_so_wizard" model="ir.ui.view">
+            <field name="name">Create SO Wizard</field>
+            <field name="model">fast.so.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Create SO Wizard" create="false">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="partner_id" widget="res_partner_many2one"/>
+                            </group>
+                            <field name="product_ids" domain="[('location_id.usage','=', 'internal')]">
+                                <list editable="bottom" create="false" delete="false">
+                                    <field name="location_id" readonly="1"/>
+                                    <field name="product_id" readonly="1"/>
+                                    <field name="lot_id" readonly="1" groups="stock.group_production_lot"/>
+                                    <field name="transit_qty"/>
+                                </list>
+                            </field>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Create SO" class="btn-primary" name="pass_values_to_stock_quant_so"
+                                type="object"/>
+                        <button string="Create SO and View" class="btn-primary"
+                                name="pass_values_to_stock_quant_so_and_view" type="object"/>
+                        <button string="Add To Cart" class="btn-primary"
+                                name="pass_values_to_add_to_cart" type="object"/>
+                        <button string="Cancel" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="fast_po_wizard" model="ir.ui.view">
+            <field name="name">Create PO Wizard</field>
+            <field name="model">fast.po.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Create PO Wizard" create="false" edit="false">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="partner_id" widget="res_partner_many2one"/>
+                            </group>
+                            <field name="product_ids" domain="[('location_id.usage','=', 'internal')]">
+                                <list editable="bottom">
+                                    <field name="company_id" column_invisible="1" />
+                                    <field name="product_id"/>
+                                    <field name="lot_id" readonly="1" groups="stock.group_production_lot"/>
+                                    <field name="transit_qty"/>
+                                </list>
+                            </field>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Create PO" class="btn-primary" name="pass_values_to_stock_quant_po"
+                                type="object"/>
+                        <button string="Create PO and View" class="btn-primary"
+                                name="pass_values_to_stock_quant_po_and_view" type="object"/>
+                        <button string="Cancel" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

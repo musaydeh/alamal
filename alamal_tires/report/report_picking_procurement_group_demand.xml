@@ -1,0 +1,87 @@
+<odoo>
+    <template id="report_picking_procurement_group_demand">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <t t-set="address" t-value="None"/>
+                    <div class="page">
+                        <div class="row justify-content-end mb16">
+                            <div class="col-4" name="right_box">
+                                <div t-field="o.name"
+                                     t-options="{'widget': 'barcode', 'width': 600, 'height': 100, 'img_style': 'width:300px;height:50px;'}">
+                                    <div class="bg-light border-1 rounded d-flex flex-column align-items-center justify-content-center p-3 opacity-75 text-muted text-center">
+                                        (document barcode)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6" name="div_partner_address">
+                                <div>
+                                    <span>
+                                        <strong>Address:</strong>
+                                    </span>
+                                    <div t-field="o.partner_id"
+                                         t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="oe_structure"/>
+                        <h1 t-field="o.name" class="mt0"/>
+                        <div class="oe_structure"/>
+
+                        <div class="row mt32 mb32">
+                            <div class="col-auto" name="div_origin">
+                                <strong>Order:</strong>
+                                <p t-field="o.name"/>
+                            </div>
+                            <div class="col-auto" name="div_date_order">
+                                <strong>Order Date:</strong>
+                                <p t-field="o.date_order"/>
+                            </div>
+                            <div class="col-auto" name="div_state">
+                                <strong>Status:</strong>
+                                <p t-field="o.state"/>
+                            </div>
+                        </div>
+
+                        <table class="table table-sm" if="stock_move_ids">
+                            <thead>
+                                <tr>
+                                    <th name="th_product">
+                                        <strong>Product</strong>
+                                    </th>
+                                    <th name="th_warehouse">
+                                        <strong>Warehouse</strong>
+                                    </th>
+                                    <th class="text-end">
+                                        <strong>Quantity</strong>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.stock_move_ids.filtered(lambda m:m.state != 'cancel')" t-as="stock_move">
+                                    <td>
+                                        <span t-field="stock_move.product_id.display_name"/>
+                                        <br/>
+                                        <span t-if="stock_move.product_id.description_picking"
+                                              t-field="stock_move.product_id.description_picking">
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span t-field="stock_move.picking_type_id.warehouse_id"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-field="stock_move.product_uom_qty"/>
+                                        <span t-field="stock_move.product_uom" groups="uom.group_uom"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

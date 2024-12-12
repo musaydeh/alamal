@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_users_form_inherit_warehouse_access" model="ir.ui.view">
+        <field name="name">res.users.form.inherit.warehouse.access</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Warehouse Access" groups="stock.group_stock_manager">
+                    <field name="warehouse_access_ids">
+                        <list editable="bottom">
+                            <field name="warehouse_id" options="{'no_create': True}"/>
+                            <field name="company_name" readonly="1"/>
+                            <field name="active" widget="boolean_toggle"/>
+                            <field name="notes" optional="show"/>
+                        </list>
+                    </field>
+                    <group>
+                        <field name="accessible_warehouse_ids" widget="many2many_tags" readonly="1"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="fast_so_po_tree_view" model="ir.ui.view">
+            <field name="name">Fast SO/Po</field>
+            <field name="model">stock.quant</field>
+            <field name="arch" type="xml">
+
+                <list create="0" edit="0">
+                    <header>
+                        <button class="btn-primary" name="make_fast_so_wizard" type="object" string="Create SO"
+                                groups="sales_team.group_sale_salesman"/>
+                        <button class="btn-primary" name="make_fast_po_wizard" type="object" string="Create PO"
+                                groups="purchase.group_purchase_user"/>
+                        <button class="btn-primary" name="action_create_fast_internal_warehouse_transfer" type="object"
+                                string="Inter-Warehouse Transfer" groups="stock.group_stock_user"/>
+                        <button class="btn-primary" name="view_my_cart" type="object" string="View MY Cart"
+                                groups="sales_team.group_sale_salesman"
+                        />
+                    </header>
+                    <field name="create_date" column_invisible="1"/>
+                    <field name="write_date" column_invisible="1"/>
+                    <field name="id" column_invisible="1"/>
+                    <field name="tracking" column_invisible="1"/>
+                    <field name="company_id" column_invisible="1"/>
+                    <field name="location_id" readonly="id"
+                           invisible="context.get('hide_location', False)"
+                           options="{'no_create': True}"/>
+                    <field name="storage_category_id" optional="hide"/>
+                    <field name="product_id"
+                           readonly="context.get('single_product', False) or not id " force_save="1"
+                           options="{'no_create': True}" widget="many2one"/>
+                    <field name="product_categ_id" optional="hide"/>
+                    <field name="product_tire_brand" optional="hide"/>
+                    <field name="product_tire_pattern" optional="hide"/>
+                    <field name='company_id' groups="base.group_multi_company" optional="hidden"/>
+                    <field name="package_id" groups="stock.group_tracking_lot"
+                           readonly="id"/>
+                    <field name="lot_id" groups="stock.group_production_lot"
+
+                           invisible="context.get('hide_lot', False)"
+                           readonly="not id or tracking not in  ['serial', 'lot']"
+                           required="tracking != 'none'" widget="many2one"
+                           context="{'default_product_id': product_id, 'default_company_id': company_id}"/>
+                    <field name="owner_id" groups="stock.group_tracking_owner"
+                           readonly="id"
+                           options="{'no_create': True}"/>
+                    <field name="inventory_quantity_auto_apply" string="On Hand Quantity" readonly="1"
+                           sum="Total On Hand"/>
+                    <field name="reserved_quantity" optional="show" sum="Total Reserved"/>
+                    <field name="available_qty" readonly="1"/>
+                    <field name="product_uom_id" string="Unit" groups="uom.group_uom"/>
+                    <field name="standard_price" readonly="1"/>
+                    <field name="lst_price" readonly="1"/>
+                    <button name="action_sale_history" type="object" icon="fa-history" title="Sale History"
+                            string="Show Sales History" groups="sales_team.group_sale_salesman"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="fast_so_po_tree_action" model="ir.actions.act_window">
+            <field name="name">Fast SO/PO</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.quant</field>
+            <field name="view_mode">list</field>
+            <field name="domain">[('location_id.usage','=', 'internal'),('location_id.is_temp_location','=',
+                False),('product_id.active','=',True)]
+            </field>
+            <field name="view_id" ref="fast_so_po_tree_view"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                </p>
+                <p>
+                    <!-- More details about what a user can do with this object will be OK -->
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="fast_so_po_main_icon" name="Fast Order"
+                  action="fast_so_po_tree_action"
+                  web_icon="fast_so_po_from_stock_adj,static/description/icon.png"
+                  sequence="88"
+                  groups="sales_team.group_sale_salesman,purchase.group_purchase_user"
+        />
+
+        <record model="ir.ui.menu" id="stock.menu_valuation">
+            <field name="groups_id" eval="False"/>
+        </record>
+
+        <menuitem action="stock.action_production_lot_form" id="menu_action_production_lot_form_purchase"
+                  parent="purchase.menu_purchase_products" groups="stock.group_production_lot"
+                  sequence="101"/>
+
+        <menuitem action="stock.action_production_lot_form" id="menu_action_production_lot_form_sale"
+                  parent="sale.product_menu_catalog" groups="stock.group_production_lot"
+                  sequence="101"/>
+    </data>
+</odoo>

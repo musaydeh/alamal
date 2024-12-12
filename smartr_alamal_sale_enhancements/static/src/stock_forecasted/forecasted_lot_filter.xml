@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="smartr_alamal_sale_enhancements.ForecastedLotFilter">
+        <div t-if="displayLotFilter" class="btn-group">
+            <Dropdown menuClass="o_filter_menu" items="lotsItems">
+                <button class="btn btn-secondary">
+                    <span class="fa fa-home"/>
+                    Lot:
+                    <t t-out="activeLot.name"/>
+                </button>
+            </Dropdown>
+        </div>
+    </t>
+
+</templates>

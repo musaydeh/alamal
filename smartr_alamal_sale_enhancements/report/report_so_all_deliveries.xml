@@ -1,0 +1,88 @@
+<odoo>
+    <template id="report_so_all_deliveries_document">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-set="o" t-value="o.with_context(lang=o.partner_shipping_id.lang)"/>
+
+                <t t-set="address">
+                    <div class="row mb-4">
+                        <div class="col-6"/>
+                        <div class="col-6">
+                            <strong>Delivery Address</strong>
+                            <div t-field="o.partner_shipping_id"
+                                 t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                        </div>
+                    </div>
+                </t>
+
+                <div class="page">
+                    <h2>
+                        <span t-field="o.name"/>
+                    </h2>
+
+                    <div class="oe_structure"/>
+                    <t t-set="move_lines"
+                       t-value="o.order_line.move_ids.filtered(lambda m:m.picking_id.picking_type_id.code == 'outgoing' and m.state != 'cancel').move_line_ids"/>
+
+                    <table class="table table-borderless" t-if="move_lines">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Lot/Serial Number</th>
+                                <th>Location</th>
+                                <th>Delivered</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="move_lines" t-as="move_line">
+                                <tr>
+                                    <td>
+                                        <span t-field="move_line.product_id"/>
+
+                                        <t t-set="description" t-value="move_line.move_id.description_picking"/>
+                                        <p t-if="description !='' and description != move_line.product_id.name">
+                                            <span t-esc="description"/>
+                                        </p>
+                                    </td>
+
+                                    <td>
+                                        <span t-field="move_line.lot_id"/>
+                                    </td>
+
+                                    <td>
+                                        <span t-field="move_line.location_id"/>
+                                    </td>
+
+                                    <td>
+                                        <span t-field="move_line.quantity"/>
+                                        <span t-field="move_line.product_uom_id"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_so_all_deliveries">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="smartr_alamal_sale_enhancements.report_so_all_deliveries_document"
+               t-lang="o.partner_shipping_id.lang"/>
+        </t>
+    </template>
+
+    <record id="action_report_so_all_deliveries" model="ir.actions.report">
+        <field name="name">SO All Deliveries</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">smartr_alamal_sale_enhancements.report_so_all_deliveries</field>
+        <field name="report_file">smartr_alamal_sale_enhancements.report_so_all_deliveries</field>
+        <field name="print_report_name">'SO All Deliveries - %s - %s' % (object.partner_shipping_id.name or '',
+            object.name)
+        </field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

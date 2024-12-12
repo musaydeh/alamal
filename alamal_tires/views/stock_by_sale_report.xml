@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_move_form_receipt_picking_inherit" model="ir.ui.view">
+            <field name="name">stock.move.tree</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="sale_id"/>
+                    <field name="route_id" readonly="state in ['done','cancel']"/>
+                </xpath>
+                <xpath expr="//form" position="attributes">
+                    <attribute name="edit">true</attribute>
+                </xpath>
+                <xpath expr="//field[@name='product_id']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='location_id']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='location_dest_id']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='product_uom_qty']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='origin']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='group_id']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+
+            </field>
+        </record>
+        <record id="view_move_tree_receipt_picking_inherit" model="ir.ui.view">
+            <field name="name">stock.move.tree</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_tree_receipt_picking"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="after">
+                    <field name="sale_id"/>
+                    <field name="route_id"/>
+                </xpath>
+                <xpath expr="//field[@name='product_id']" position="before">
+                    <field name="location_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="inherit_view_move_search" model="ir.ui.view">
+            <field name="name">stock.move.search</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='by_product']" position="after">
+                    <filter string="Sale Order" name="by_order" domain="[]" context="{'group_by': 'sale_id'}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="inherit_procurement_group_form_view" model="ir.ui.view">
+            <field name="name"></field>
+            <field name="model">procurement.group</field>
+            <field name="inherit_id" ref="stock.procurement_group_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">0</attribute>
+                </xpath>
+
+                <xpath expr="//sheet" position="before">
+                    <header>
+                        <button name="action_print_reports" string="Print Reports" type="object" class="oe_highlight"/>
+                    </header>
+                </xpath>
+
+                <xpath expr="//field[@name='move_type']" position="after">
+                    <field name="partner_id" string="Contact" readonly="1"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="date_order"/>
+                    <field name="expected_delivery_date"/>
+                    <field name="responsible_id" widget="many2one_avatar_user"/>
+                    <field name="order_notes"/>
+                    <field name="state"/>
+                    <field name="stock_move_ids">
+                        <list editable="bottom" delete="false">
+                            <field name="date" readonly="1" optional="show"/>
+                            <field name="company_id" column_invisible="1"/>
+                            <field name="picking_id" readonly="1"/>
+                            <field name="location_id" readonly="1"/>
+                            <field name="route_id" column_invisible="1"/>
+                            <button type="object" name="action_product_locations_report"
+                                    title="Stock in route"
+                                    icon="fa-map-marker"
+                                    invisible="not product_id or not route_id or state in ['done','cancel']"
+                            />
+                            <field name="route_id" readonly="route_id == False or state in ['done','cancel']"
+                                   optional="hide"/>
+                            <field name="product_id" readonly="1"/>
+                            <field name="product_uom_qty" readonly="1" optional="show"/>
+                            <field name="product_uom" readonly="1" optional="hide"/>
+                            <field name="quantity" readonly="1"/>
+                            <field name="state" readonly="1"/>
+                            <button name="button_validate"
+                                    invisible="state in ('draft', 'confirmed','waiting' ,'done', 'cancel')"
+                                    string="Validate Transfer" type="object" class="oe_highlight"
+                                    groups="stock.group_stock_user"/>
+                        </list>
+                    </field>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_procurement_group_filter" model="ir.ui.view">
+            <field name="name">view.procurement.group.filter</field>
+            <field name="model">procurement.group</field>
+            <field name="arch" type="xml">
+                <search string="Procurement Groups">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="date_order"/>
+                    <field name="expected_delivery_date"/>
+
+                    <filter name="to_do" string="To Do" domain="[('state', '=', 'to_do')]"/>
+                    <filter name="done" string="Done" domain="[('state', '=', 'done')]"/>
+                    <separator/>
+                    <filter name="sales" string="Sales" domain="[('sale_id', '!=', False)]"/>
+                    <filter name="purchases" string="Purchases"
+                            domain="[('stock_move_ids.purchase_line_id', '!=', False)]"/>
+                    <separator/>
+                    <filter name="date_order" string="Order Date" date="date_order"/>
+                    <filter name="expected_delivery_date" string="Expected Delivery Date"
+                            date="expected_delivery_date"/>
+
+                    <group expand="0" string="Group By">
+                        <filter string="Contact" name="group_by_partner" domain="[]"
+                                context="{'group_by': 'partner_id'}"/>
+                        <filter string="Order Date" name="group_by_date_order" domain="[]"
+                                context="{'group_by': 'date_order'}"/>
+                        <filter string="Expected Delivery  Date" name="group_by_expected_delivery_date" domain="[]"
+                                context="{'group_by': 'expected_delivery_date'}"/>
+                        <filter string="Responsible" name="group_by_responsible" domain="[]"
+                                context="{'group_by': 'responsible_id'}"/>
+                        <separator/>
+                        <filter string="Status" name="group_by_state" domain="[]" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_procurement_group_tree" model="ir.ui.view">
+            <field name="name">view.procurement.group.tree</field>
+            <field name="model">procurement.group</field>
+            <field name="arch" type="xml">
+                <list string="Procurement Groups" create="0" duplicate="0">
+                    <field name="name"/>
+                    <field name="date_order" optional="show"/>
+                    <field name="expected_delivery_date" optional="hide"/>
+                    <field name="responsible_id" widget="many2one_avatar_user" optional="show"/>
+                    <field name="move_type" optional="show"/>
+                    <field name="partner_id" string="Contact" optional="show"/>
+                    <field name="order_notes" optional="show"/>
+                    <field name="company_id" groups="base.group_multi_company" optional="show"/>
+                    <field name="state" optional="show"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="action_view_procurement_group" model="ir.actions.act_window">
+            <field name="name">Procurement Groups</field>
+            <field name="res_model">procurement.group</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_to_do': 1}</field>
+        </record>
+
+        <menuitem id="menu_stock_move_by_sale" name="Moves By Sale"
+                  parent="stock.menu_warehouse_report" sequence="26"
+                  action="action_view_procurement_group"/>
+
+    </data>
+</odoo>

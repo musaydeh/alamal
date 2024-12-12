@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_smartr_alamal_sale_enhancements_product_tree" model="ir.ui.view">
+            <field name="name">view.smartr.alamal.sale.enhancements.product.tree</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='qty_available']" position="after">
+                    <field name="free_qty_main_company" optional="show"
+                           groups="smartr_alamal_sale_enhancements.group_allow_see_other_quantities"/>
+                    <field name="free_qty_other_companies" optional="show"
+                           groups="smartr_alamal_sale_enhancements.group_allow_see_other_quantities"/>
+                    <field name="free_qty" string="Available Quantity" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_smartr_alamal_sale_enhancements_product_catalog_kanban" model="ir.ui.view">
+            <field name="name">view.smartr.alamal.sale.enhancements.product.catalog.kanban</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_view_kanban_catalog"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='o_kanban_price']" position="after">
+                    <div t-if="record.is_storable.raw_value" name="o_kanban_free_qty_main_company">
+                        <span>Available Quantity:</span>
+                        <field name="free_qty"/>
+                        <field name="uom_id" class="ms-1" groups="uom.group_uom"/>
+                    </div>
+
+                    <t groups="smartr_alamal_sale_enhancements.group_allow_see_other_quantities">
+                        <div t-if="record.is_storable.raw_value" name="o_kanban_free_qty_main_company">
+                            <span>Available Quantity (Main Company):</span>
+                            <field name="free_qty_main_company"/>
+                            <field name="uom_id" class="ms-1" groups="uom.group_uom"/>
+                        </div>
+                    </t>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_smartr_alamal_sale_enhancements_product_template_kanban" model="ir.ui.view">
+            <field name="name">view.smartr.alamal.sale.enhancements.product.template.kanban</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_kanban_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='list_price']/.." position="after">
+                    <span t-if="record.show_on_hand_qty_status_button.raw_value">Available Quantity:
+                        <field name="free_qty"/>
+                        <field name="uom_id" class="ms-1" groups="uom.group_uom"/>
+                    </span>
+
+                    <t groups="smartr_alamal_sale_enhancements.group_allow_see_other_quantities">
+                        <span t-if="record.show_on_hand_qty_status_button.raw_value">Available Quantity (Main Company):
+                            <field name="free_qty_main_company"/>
+                            <field name="uom_id" class="ms-1" groups="uom.group_uom"/>
+                        </span>
+                    </t>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_smartr_alamal_sale_enhancements_product_template_tree" model="ir.ui.view">
+            <field name="name">view.smartr.alamal.sale.enhancements.product.template.tree</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='qty_available']" position="after">
+                    <field name="free_qty_main_company" optional="show"
+                           groups="smartr_alamal_sale_enhancements.group_allow_see_other_quantities"/>
+                    <field name="free_qty_other_companies" optional="show"
+                           groups="smartr_alamal_sale_enhancements.group_allow_see_other_quantities"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="product_template_inherit_second_name" model="ir.ui.view">
+            <field name="name">product.template.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='default_code']" position="after">
+                    <field name="second_name"/>
+                </xpath>
+
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button type="object" name="action_other_branches_quantity_on_hand" class="oe_stat_button"
+                            icon="fa-cubes">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">On Hand (Branches)</span>
+                        </div>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+        <!--        Adding Second name to Search Views      -->
+
+        <record id="inherit_product_search_form_view_stock" model="ir.ui.view">
+            <field name="name">product.product.search.inherit</field>
+            <field name="model">product.product</field>
+            <!--            <field name="mode">primary</field>-->
+            <field name="inherit_id" ref="stock.stock_product_search_form_view"/>
+            <field name="arch" type="xml">
+                <field name="name" position="replace">
+                    <field name="name" string="Product"
+                           filter_domain="['|', '|', '|', ('default_code', 'ilike', self), ('name', 'ilike', self), ('barcode', 'ilike', self),('second_name', 'ilike', self)]"/>
+                </field>
+
+            </field>
+        </record>
+        <record id="inherit_product_search_form_view_sales" model="ir.ui.view">
+            <field name="name">product.product.search.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_search_form_view"/>
+            <field name="arch" type="xml">
+                <field name="name" position="replace">
+                    <field name="name" string="Product"
+                           filter_domain="['|', '|', '|', ('default_code', 'ilike', self), ('name', 'ilike', self), ('barcode', 'ilike', self),('second_name', 'ilike', self)]"/>
+                </field>
+
+            </field>
+        </record>
+        <record id="inherit_product_view_search_catalog" model="ir.ui.view">
+            <field name="name">product.view.search.catalog</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_view_search_catalog"/>
+            <field name="arch" type="xml">
+                <field name="name" position="replace">
+                    <field name="name" string="Product"
+                           filter_domain="['|', '|', '|', ('default_code', 'ilike', self), ('name', 'ilike', self), ('barcode', 'ilike', self),('second_name', 'ilike', self)]"/>
+                </field>
+
+            </field>
+        </record>
+        <record id="inherit_stock_quant_search_view" model="ir.ui.view">
+            <field name="name">stock.quant.search.inherit</field>
+            <field name="model">stock.quant</field>
+            <field name="inherit_id" ref="stock.quant_search_view"/>
+            <field name="arch" type="xml">
+                <field name="product_id" position="replace">
+                    <field name="product_id" string="Product"
+                           filter_domain="['|', '|', '|', ('product_tmpl_id.default_code', 'ilike', self), ('product_tmpl_id.name', 'ilike', self), ('product_tmpl_id.barcode', 'ilike', self),('product_tmpl_id.second_name', 'ilike', self)]"/>
+                </field>
+            </field>
+        </record>
+        <record id="inherit_product_template_search_view" model="ir.ui.view">
+            <field name="name">product.template.search.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_search_view"/>
+            <field name="arch" type="xml">
+                <field name="name" position="replace">
+                    <field name="name" string="Product"
+                           filter_domain="['|', '|', '|', '|', ('default_code', 'ilike', self), ('product_variant_ids.default_code', 'ilike', self), ('product_variant_ids.second_name', 'ilike', self),('name', 'ilike', self), ('barcode', 'ilike', self)]"/>
+                </field>
+
+            </field>
+        </record>
+
+        <record id="stock.product_template_action_product" model="ir.actions.act_window">
+            <field name="view_mode">list,kanban,form</field>
+        </record>
+
+        <record id="sale.product_template_action" model="ir.actions.act_window">
+            <field name="view_mode">list,kanban,form,activity</field>
+            <field name="view_id" ref="product.product_template_tree_view"/>
+        </record>
+
+        <record id="purchase.product_normal_action_puchased" model="ir.actions.act_window">
+            <field name="view_mode">list,kanban,form,activity</field>
+        </record>
+    </data>
+</odoo>

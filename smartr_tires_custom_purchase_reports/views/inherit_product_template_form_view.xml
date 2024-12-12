@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="product_template_view_form_inherit" model="ir.ui.view">
+            <field name="name">product.template.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='sales']/group[@name='sale']/group[@name='upsell']" position="before">
+                    <button type="object" name="action_sale_history" string="Show Sales History"
+                            icon="fa-history"
+                    />
+                </xpath>
+            </field>
+        </record>
+        <record id="inherit_product_product_tree_view" model="ir.ui.view">
+            <field name="name">product.product.tree.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='uom_id']" position="after">
+                </xpath>
+                <xpath expr="//header/button[@name='action_open_label_layout']" position="after">
+                    <button class="btn-primary" name="make_fast_so_wizard" type="object" string="Create SO"
+                            groups="sales_team.group_sale_salesman"/>
+                    <button class="btn-primary" name="make_fast_po_wizard" type="object" string="Create PO"
+                            groups="purchase.group_purchase_user"/>
+                    <button class="btn-primary" name="view_my_cart" type="object" string="View MY Cart"
+                            groups="sales_team.group_sale_salesman"
+                    />
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

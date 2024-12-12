@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_smartr_alamal_sale_enhancements_product_pricelist_form" model="ir.ui.view">
+        <field name="name">view.smartr.alamal.sale.enhancements.product.pricelist.form</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='item_ids']/list/field[@name='min_quantity']" position="after">
+                <field name="lot_id" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

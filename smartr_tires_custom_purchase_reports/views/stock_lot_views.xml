@@ -1,0 +1,45 @@
+<odoo>
+    <record id="view_smartr_tires_custom_purchase_reports_stock_lot_filter" model="ir.ui.view">
+        <field name="name">view.smartr.tires.custom.purchase.reports.stock.lot.filter</field>
+        <field name="model">stock.lot</field>
+        <field name="inherit_id" ref="stock.search_product_lot_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='group_by_Company']" position="after">
+                <separator/>
+                <filter name="group_by_product_tire_brand" string="Tire Brand" domain="[]"
+                        context="{'group_by': 'product_tire_brand'}"/>
+                <filter name="group_by_product_tire_pattern" string="Tire Pattern" domain="[]"
+                        context="{'group_by': 'product_tire_pattern'}"/>
+
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_smartr_tires_custom_purchase_reports_stock_lot_form" model="ir.ui.view">
+        <field name="name">view.smartr.tires.custom.purchase.reports.stock.lot.form</field>
+        <field name="model">stock.lot</field>
+        <field name="inherit_id" ref="stock.view_production_lot_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='ref']" position="after">
+                <field name="source_id" options="{'no_open': True, 'no_create': True}"/>
+                <field name="year"/>
+                <field name="product_kind" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//group[@name='main_group']" position="after">
+                <group string="Tire Data" invisible="product_kind != 'tire'">
+                    <group>
+                        <field name="product_tire_brand" options="{'no_open': True}"/>
+                        <field name="product_tire_pattern" options="{'no_open': True}"/>
+                    </group>
+                    <group/>
+                </group>
+            </xpath>
+
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="readonly">product_kind == 'tire'</attribute>
+                <attribute name="force_save">1</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

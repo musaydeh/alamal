@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_sales_id_container">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <table class="table table-condensed" style="border: 3px solid black !important;">
+                            <t t-set="records" t-value="docs.order_container_ids"/>
+                            <t t-set="total_price" t-value="0.0"/>
+                            <t t-set="total_qty" t-value="0.0"/>
+                            <t t-set="total_weight" t-value="0.0"/>
+                            <t t-foreach="records" t-as="record">
+                                <thead>
+                                    <th name="record.name" class="text-left">
+                                        <strong>Container No :
+                                            <span t-field="record.name"/>
+                                        </strong>
+                                    </th>
+                                    <th name="record.product_uom_qty" class="text-right">
+                                        <strong>Qty Unit</strong>
+                                    </th>
+                                    <th name="record.price_unit" class="text-right">
+                                        <strong>Weight</strong>
+                                    </th>
+                                    <th name="record.price_unit" class="text-right">
+                                        <strong>Unit Price</strong>
+                                    </th>
+                                </thead>
+                                <t t-set="sub_total" t-value="0.0"/>
+                                <t t-set="qty_total" t-value="0.0"/>
+                                <t t-set="weight_total" t-value="0.0"/>
+                                <t t-foreach="docs.order_line" t-as="doc">
+                                    <tr>
+                                        <t t-if="record.id == doc.container_id.id">
+                                            <t t-set="sub_total" t-value="sub_total + doc.price_unit"/>
+                                            <t t-set="qty_total" t-value="qty_total + doc.product_uom_qty"/>
+                                            <t t-set="weight_total"
+                                               t-value="weight_total + (doc.product_uom_qty * doc.product_id.weight)"/>
+
+                                            <t t-set="total_price" t-value="total_price + doc.price_unit"/>
+                                            <t t-set="total_qty" t-value="total_qty + doc.product_uom_qty"/>
+                                            <t t-set="total_weight"
+                                               t-value="total_weight + (doc.product_uom_qty * doc.product_id.weight)"/>
+
+                                            <td>
+                                                <span t-field="doc.product_template_id"/>
+                                            </td>
+                                            <td style="text-align:right;">
+                                                <span t-field="doc.product_uom_qty"/>
+                                                <span t-field="doc.product_uom.name"/>
+                                            </td>
+                                            <td style="text-align:right;">
+                                                <span t-esc="(doc.product_uom_qty * doc.product_id.weight)"/>
+                                                <span>Kg</span>
+                                            </td>
+                                            <td style="text-align:right;">
+                                                <span t-field="doc.price_unit"
+                                                      t-options='{"widget": "monetary", "display_currency": docs.currency_id}'
+                                                />
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td>
+                                        <span>Sub Total</span>
+                                    </td>
+                                    <td style="text-align:right;">
+                                        <span t-esc="qty_total"/>
+                                    </td>
+                                    <td style="text-align:right;">
+                                        <span t-esc="weight_total"/>
+                                        <span>Kg</span>
+                                    </td>
+                                    <td style="text-align:right;">
+                                        <span t-esc="sub_total" t-options='{"widget": "monetary", "display_currency": docs.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"></td>
+                                </tr>
+                            </t>
+                            <!--                            <tr><td></td></tr>-->
+                            <tr>
+                                <td>
+                                    <span>Total</span>
+                                </td>
+                                <td style="text-align:right;">
+                                    <span t-esc="total_qty"/>
+                                </td>
+                                <td style="text-align:right;">
+                                    <span t-esc="total_weight"/>
+                                    <span>Kg</span>
+                                </td>
+                                <td style="text-align:right;">
+                                    <span t-esc="total_price" t-options='{"widget": "monetary", "display_currency": docs.currency_id}'/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </template>
+        <template id="report_sales_id_container_without_prices">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <table class="table table-condensed" style="border: 3px solid black !important;">
+                            <t t-set="records" t-value="docs.order_container_ids"/>
+                            <t t-set="total_price" t-value="0.0"/>
+                            <t t-set="total_qty" t-value="0.0"/>
+                            <t t-set="total_weight" t-value="0.0"/>
+                            <t t-foreach="records" t-as="record">
+                                <thead>
+                                    <th name="record.name" class="text-right">
+                                        <strong>Container No :
+                                            <span t-field="record.name"/>
+                                        </strong>
+                                    </th>
+                                    <th name="record.product_uom_qty" class="text-right">
+                                        <strong>Qty Unit</strong>
+                                    </th>
+                                    <th name="record.price_unit" class="text-right">
+                                        <strong>Weight</strong>
+                                    </th>
+
+                                </thead>
+                                <t t-set="sub_total" t-value="0.0"/>
+                                <t t-set="qty_total" t-value="0.0"/>
+                                <t t-set="weight_total" t-value="0.0"/>
+                                <t t-foreach="docs.order_line" t-as="doc">
+                                    <tr>
+                                        <t t-if="record.id == doc.container_id.id">
+                                            <t t-set="sub_total" t-value="sub_total + doc.price_unit"/>
+                                            <t t-set="qty_total" t-value="qty_total + doc.product_uom_qty"/>
+                                            <t t-set="weight_total"
+                                               t-value="weight_total + (doc.product_uom_qty * doc.product_id.weight)"/>
+
+                                            <t t-set="total_price" t-value="total_price + doc.price_unit"/>
+                                            <t t-set="total_qty" t-value="total_qty + doc.product_uom_qty"/>
+                                            <t t-set="total_weight"
+                                               t-value="total_weight + (doc.product_uom_qty * doc.product_id.weight)"/>
+
+                                            <td>
+                                                <span t-field="doc.product_template_id"/>
+                                            </td>
+                                            <td style="text-align:right;">
+                                                <span t-field="doc.product_uom_qty"/>
+                                                <span t-field="doc.product_uom.name"/>
+                                            </td>
+                                            <td style="text-align:right;">
+                                                <span t-esc="(doc.product_uom_qty * doc.product_id.weight)"/>
+                                                <span>Kg</span>
+
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td>
+                                        <span>Sub Total</span>
+                                    </td>
+                                    <td style="text-align:right;">
+                                        <span t-esc="qty_total"/>
+                                    </td>
+                                    <td style="text-align:right;">
+                                        <span t-esc="weight_total"/>
+                                        <span>Kg</span>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3"></td>
+                                </tr>
+                            </t>
+                            <tr>
+                                <td>
+                                    <span>Total</span>
+                                </td>
+                                <td style="text-align:right;">
+                                    <span t-esc="total_qty"/>
+                                </td>
+                                <td style="text-align:right;">
+                                    <span t-esc="total_weight"/>
+                                    <span>Kg</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
+

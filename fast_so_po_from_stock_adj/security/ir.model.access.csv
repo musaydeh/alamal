@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_fast_so_wizard,fast_so_wizard,model_fast_so_wizard,base.group_user,1,1,1,1
+access_fast_po_wizard,fast_po_wizard,model_fast_po_wizard,base.group_user,1,1,1,1
+access_stock_quant_sale_user,Access Stock Quant Sale User,model_stock_quant,sales_team.group_sale_salesman,1,1,0,0
+access_stock_quant_purchase_user,Access Stock Quant purchase User,model_stock_quant,purchase.group_purchase_user,1,1,0,0
+
+access_inter_warehouse_transfer_group_stock_user,inter.warehouse.transfer.group.stock.user.,model_inter_warehouse_transfer,stock.group_stock_user,1,1,1,1
+access_inter_warehouse_transfer_line_group_stock_user,inter.warehouse.transfer.line.group.stock.user.,model_inter_warehouse_transfer_line,stock.group_stock_user,1,1,1,1
+
+

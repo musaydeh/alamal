@@ -1,0 +1,61 @@
+<odoo>
+    <record id="view_purchase_order_type_filter" model="ir.ui.view">
+        <field name="name">view.purchase.order.type.filter</field>
+        <field name="model">purchase.order.type</field>
+        <field name="arch" type="xml">
+            <search string="Purchase Order Type">
+                <field name="name"/>
+                <field name="code"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_purchase_order_type_tree" model="ir.ui.view">
+        <field name="name">view.purchase.order.type.tree</field>
+        <field name="model">purchase.order.type</field>
+        <field name="arch" type="xml">
+            <list string="Purchase Order Type">
+                <field name="name"/>
+                <field name="code" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_purchase_order_type_form" model="ir.ui.view">
+        <field name="name">view.purchase.order.type.form</field>
+        <field name="model">purchase.order.type</field>
+        <field name="arch" type="xml">
+            <form string="Purchase Order Type">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Name..."/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="code"/>
+                        </group>
+                        <group/>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+
+                <!-- Chatter -->
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_purchase_order_types" model="ir.actions.act_window">
+        <field name="name">Purchase Order Types</field>
+        <field name="res_model">purchase.order.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_purchase_order_types" name="Purchase Order Types" parent="purchase.menu_purchase_config"
+              action="action_purchase_order_types" sequence="2"/>
+</odoo>

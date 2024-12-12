@@ -1,0 +1,63 @@
+<odoo>
+    <record id="view_mrp_tag_filter" model="ir.ui.view">
+        <field name="name">view.mrp.tag.filter</field>
+        <field name="model">mrp.tag</field>
+        <field name="arch" type="xml">
+            <search string="MRP Tag">
+                <field name="name"/>
+                <field name="code"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_mrp_tag_tree" model="ir.ui.view">
+        <field name="name">view.mrp.tag.tree</field>
+        <field name="model">mrp.tag</field>
+        <field name="arch" type="xml">
+            <list string="MRP Tag">
+                <field name="name"/>
+                <field name="code" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_mrp_tag_form" model="ir.ui.view">
+        <field name="name">view.mrp.tag.form</field>
+        <field name="model">mrp.tag</field>
+        <field name="arch" type="xml">
+            <form string="MRP Tag">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Name..."/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="code"/>
+                        </group>
+                        <group/>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+
+                <!-- Chatter -->
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mrp_tags" model="ir.actions.act_window">
+        <field name="name">MRP Tags</field>
+        <field name="res_model">mrp.tag</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_mrp_tags_purchase" name="MRP Tags" parent="purchase.menu_purchase_config"
+              action="action_mrp_tags" sequence="3"/>
+    <menuitem id="menu_mrp_tags_sale" name="MRP Tags" parent="sale.menu_sales_config" action="action_mrp_tags"
+              sequence="20"/>
+</odoo>

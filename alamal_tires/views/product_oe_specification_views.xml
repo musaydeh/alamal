@@ -1,0 +1,43 @@
+<odoo>
+    <record id="view_product_oe_specification_tree" model="ir.ui.view">
+        <field name="name">view.product.oe.specification.tree</field>
+        <field name="model">product.oe.specification</field>
+        <field name="arch" type="xml">
+            <list string="Product OE Specification">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_product_oe_specification_form" model="ir.ui.view">
+        <field name="name">view.product.oe.specification.form</field>
+        <field name="model">product.oe.specification</field>
+        <field name="arch" type="xml">
+            <form string="Product OE Specification">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Name..."/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+
+                <!-- Chatter -->
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_product_oe_specifications" model="ir.actions.act_window">
+        <field name="name">OE Specifications</field>
+        <field name="res_model">product.oe.specification</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_product_oe_specifications" name="OE Specifications" parent="menu_warehouse_tires_conf"
+              action="action_product_oe_specifications" sequence="10"/>
+</odoo>
